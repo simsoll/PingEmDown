@@ -35,7 +35,9 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Configuration\GameConfiguration.cs" />
+    <Compile Include="Ball\Ball.cs" />
+    <Compile Include="Configuration\GameScreenConfiguration.cs" />
+    <Compile Include="Configuration\ILevelConfiguration.cs" />
     <Compile Include="Configuration\IScreenConfiguration.cs" />
     <Compile Include="Configuration\ITextConfiguration.cs" />
     <Compile Include="Configuration\TextConfiguration.cs" />
@@ -45,6 +47,11 @@
     <Compile Include="Input\Keyboard\Messages\KeyHeld.cs" />
     <Compile Include="Input\Keyboard\Messages\KeyPressed.cs" />
     <Compile Include="Input\Keyboard\Messages\KeyReleased.cs" />
+    <Compile Include="Level\ILevel.cs" />
+    <Compile Include="Level\ILevelFactory.cs" />
+    <Compile Include="Level\ILevelManager.cs" />
+    <Compile Include="Level\LevelFactory.cs" />
+    <Compile Include="Paddle\Paddle.cs" />
     <Compile Include="Component\IComponent.cs" />
     <Compile Include="Level\Level.cs" />
     <Compile Include="Level\LevelManager.cs" />

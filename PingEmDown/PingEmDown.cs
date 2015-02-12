@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using PingEmDown.Configuration;
 using PingEmDown.Draw;
 using PingEmDown.Input.Keyboard;
+using PingEmDown.Level;
 using PingEmDown.Messaging.Caliburn.Micro;
 using PingEmDown.Screen;
 using PingEmDown.Text;
@@ -30,10 +31,6 @@ namespace PingEmDown
         private KeyboardManager _keyboardManager;
         private ScreenManager _screenManager;
 
-        private IDrawer _drawer;
-        private ITextDrawer _textDrawer;
-        private ITextConfiguration _textConfiguration;
-        private IScreenConfiguration _screenConfiguration;
 
         public PingEmDown()
             : base()
@@ -67,18 +64,23 @@ namespace PingEmDown
 
             var viewPort = _graphics.GraphicsDevice.Viewport;
 
-            _screenConfiguration = new GameScreenConfiguration(viewPort.Height, viewPort.Width);
-            _textConfiguration = new TextConfiguration(Color.Black, 2);
+            var screenConfiguration = new GameScreenConfiguration(viewPort.Height, viewPort.Width);
+            var levelConfiguration = new LevelConfiguration(16, Color.Black);
+            var textConfiguration = new TextConfiguration(Color.Black, 2);
 
-            var textTexture = GetPlain2DTexture(_textConfiguration.TextSize);
+            var textTexture = GetPlain2DTexture(textConfiguration.TextSize);
+            var texture = GetPlain2DTexture(1);
 
             _eventAggregator = new EventAggregator();
             _keyboardManager = new KeyboardManager(_eventAggregator, TimeSpan.FromMilliseconds(500));
-            _drawer = new Drawer(_spriteBatch, textTexture);
-            _textDrawer = new PixelTextDrawer(_drawer);
+            var drawer = new Drawer(_spriteBatch, texture);
+            var textDrawer = new Drawer(_spriteBatch, textTexture);
+            var pixelTextDrawer = new PixelTextDrawer(textDrawer);
 
-            var startScreen = new StartScreen(_eventAggregator, _textDrawer, _screenConfiguration, _textConfiguration);
-            var gameScreen = new GameScreen(_eventAggregator);
+            var startScreen = new StartScreen(_eventAggregator, pixelTextDrawer, screenConfiguration, textConfiguration);
+            var levelFactory = new LevelFactory(screenConfiguration, levelConfiguration);
+            var levelManager = new LevelManager(_eventAggregator, levelFactory, drawer);
+            var gameScreen = new GameScreen(_eventAggregator, levelManager);
             _screenManager = new ScreenManager(_eventAggregator, startScreen, gameScreen);
 
             _keyboardManager.Load();
