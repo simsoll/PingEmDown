@@ -2,7 +2,6 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using PingEmDown.Pixel;
 
 namespace PingEmDown.Draw
 {
@@ -12,12 +11,11 @@ namespace PingEmDown.Draw
         private readonly Texture2D _texture;
         private readonly Rectangle _sourceRetangle;
 
-
         public Drawer(SpriteBatch spriteBatch, Texture2D texture)
         {
             _spriteBatch = spriteBatch;
             _texture = texture;
-            
+
             _sourceRetangle = new Rectangle(0, 0, _texture.Width, _texture.Height);
         }
 

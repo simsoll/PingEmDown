@@ -45,10 +45,10 @@
     <Compile Include="Input\Keyboard\Messages\KeyHeld.cs" />
     <Compile Include="Input\Keyboard\Messages\KeyPressed.cs" />
     <Compile Include="Input\Keyboard\Messages\KeyReleased.cs" />
-    <Compile Include="Pixel\IPixel.cs" />
+    <Compile Include="Component\IComponent.cs" />
     <Compile Include="Level\Level.cs" />
     <Compile Include="Level\LevelManager.cs" />
-    <Compile Include="Pixel\Pixel.cs" />
+    <Compile Include="Component\Component.cs" />
     <Compile Include="Screen\GameScreen.cs" />
     <Compile Include="Screen\Messages\StartGame.cs" />
     <Compile Include="Screen\StartScreen.cs" />
