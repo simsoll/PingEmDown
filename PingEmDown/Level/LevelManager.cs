@@ -40,18 +40,16 @@ namespace PingEmDown.Level
         {
             foreach (var wall in _level.Walls)
             {
-                _drawer.Draw(wall.Boundings, wall.Color, wall.Rotation);
+                _drawer.Draw(wall);
             }
 
             foreach (var block in _level.Blocks)
             {
-                _drawer.Draw(block.Boundings, block.Color, block.Rotation);
+                _drawer.Draw(block);
             }
 
-            _drawer.Draw(_level.Paddle.Position, _level.Paddle.Color);
-            _drawer.Draw(
-                new Rectangle((int) _level.Ball.Position.X, (int) _level.Ball.Position.Y, _level.Ball.Width,
-                    _level.Ball.Height), _level.Ball.Color, _level.Ball.Rotation);
+            _drawer.Draw(_level.Paddle);
+            _drawer.Draw(_level.Ball);
         }
     }
 }

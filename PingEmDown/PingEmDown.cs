@@ -65,7 +65,7 @@ namespace PingEmDown
             var viewPort = _graphics.GraphicsDevice.Viewport;
 
             var screenConfiguration = new GameScreenConfiguration(viewPort.Height, viewPort.Width);
-            var levelConfiguration = new LevelConfiguration(16, Color.Black);
+            var levelConfiguration = new LevelConfiguration(12, Color.Black, 12, 52, Color.Black, 12, 64, Color.Black, 8, Color.Black, 42, 12, 8);
             var textConfiguration = new TextConfiguration(Color.Black, 2);
 
             var textTexture = GetPlain2DTexture(textConfiguration.TextSize);
@@ -118,7 +118,7 @@ namespace PingEmDown
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Gray);
+            GraphicsDevice.Clear(Color.LightGray);
 
             _spriteBatch.Begin();
 

@@ -13,6 +13,11 @@ namespace PingEmDown.Configuration
         int BlockHeight { get; }
         int BlockWidth { get; }
         Color BlockColor { get; }
+        int PaddleHeight { get; }
+        int PaddleWidth { get; }
+        Color PaddleColor { get; }
+        int BallSize { get; }
+        Color BallColor { get; }
         int BlockWallOffset { get; }
         int BlockBlockOffset { get; }
         int BlockRows { get; }

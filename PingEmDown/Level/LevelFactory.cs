@@ -19,11 +19,27 @@ namespace PingEmDown.Level
 
         public ILevel CreateLevel()
         {
+            var paddle = new Paddle.Paddle(new Component.Component(
+                _levelConfiguration.PaddleHeight,
+                _levelConfiguration.PaddleWidth,
+                new Vector2(_screenConfiguration.ScreenWidth/2.0f - _levelConfiguration.PaddleWidth/2.0f,
+                    _screenConfiguration.ScreenHeight - _levelConfiguration.PaddleHeight*2),
+                _levelConfiguration.PaddleColor,
+                0.0f));
+
+            var ball = new Ball.Ball(new Component.Component(
+                _levelConfiguration.BallSize,
+                _levelConfiguration.BallSize,
+                new Vector2(_screenConfiguration.ScreenWidth/2.0f - _levelConfiguration.BallSize/2.0f,
+                    paddle.Position.Y - _levelConfiguration.BallSize),
+                _levelConfiguration.BallColor,
+                0.0f));
+
             return new Level(
                 CreateWalls(),
                 CreateBlocks(),
-                new Paddle.Paddle(new Component.Component(0, 0, Vector2.One*10, Color.Black, 0.0f)),
-                new Ball.Ball(new Component.Component(0, 0, Vector2.One, Color.Black, 0.0f)));
+                paddle,
+                ball);
         }
 
         private IEnumerable<IComponent> CreateWalls()
@@ -60,13 +76,23 @@ namespace PingEmDown.Level
             var blockWallOffset = _levelConfiguration.BlockWallOffset;
             var blockBlockOffset = _levelConfiguration.BlockBlockOffset;
             var blockWidth = _levelConfiguration.BlockWidth;
+            var blockHeight = _levelConfiguration.BlockHeight;
+            var blockRows = _levelConfiguration.BlockRows;
+            var blockColor = _levelConfiguration.BlockColor;
 
-            for (var x = wallWidth + blockWallOffset; x < screenWidth - wallWidth - blockWallOffset; x += blockWidth + blockBlockOffset)
+            for (var x = wallWidth + blockWallOffset;
+                x < screenWidth - wallWidth - blockWallOffset;
+                x += blockWidth + blockBlockOffset)
             {
-                for (var y)
+                for (var row = 0; row < blockRows; row++)
+                {
+                    var y = wallWidth + blockWallOffset + row*(blockHeight + blockBlockOffset);
+
+                    block.Add(new Component.Component(blockHeight, blockWidth, new Vector2(x, y), blockColor, 0.0f));
+                }
             }
 
-            return new List<IComponent>();
+            return block;
         }
     }
 }

@@ -40,6 +40,7 @@
     <Compile Include="Configuration\ILevelConfiguration.cs" />
     <Compile Include="Configuration\IScreenConfiguration.cs" />
     <Compile Include="Configuration\ITextConfiguration.cs" />
+    <Compile Include="Configuration\LevelConfiguration.cs" />
     <Compile Include="Configuration\TextConfiguration.cs" />
     <Compile Include="Draw\IDrawer.cs" />
     <Compile Include="Draw\Drawer.cs" />
