@@ -11,6 +11,8 @@ namespace PingEmDown.Component
         Color Color { get; set; }
         float Rotation { get; set; }
 
+        void Load();
+        void Unload();
         void Update(GameTime gameTime);
     }
 }

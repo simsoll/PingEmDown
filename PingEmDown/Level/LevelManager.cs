@@ -24,10 +24,12 @@ namespace PingEmDown.Level
         public void Load()
         {
             _eventAggregator.Subscribe(this);
+            _level.Load();
         }
 
         public void Unload()
         {
+            _level.Unload();
             _eventAggregator.Unsubscribe(this);
         }
 

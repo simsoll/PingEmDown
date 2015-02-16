@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using PingEmDown.Component;
+using PingEmDown.Messaging.Caliburn.Micro;
 
 namespace PingEmDown.Level
 {
@@ -20,6 +21,27 @@ namespace PingEmDown.Level
             Blocks = blocks;
             Paddle = paddle;
             Ball = ball;
+        }
+
+        public void Load()
+        {
+            foreach (var component in Blocks)
+            {
+                component.Load();
+            }
+
+            Paddle.Load();
+            Ball.Load();
+        }
+
+        public void Unload()
+        {
+            Ball.Unload();
+            Paddle.Unload();
+            foreach (var component in Blocks)
+            {
+                component.Unload();
+            }
         }
 
         public void Update(GameTime gameTime)

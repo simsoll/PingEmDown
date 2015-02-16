@@ -3,29 +3,34 @@ using System.Security.Cryptography;
 using Microsoft.Xna.Framework;
 using PingEmDown.Component;
 using PingEmDown.Configuration;
+using PingEmDown.Messaging.Caliburn.Micro;
 
 namespace PingEmDown.Level
 {
     public class LevelFactory : ILevelFactory
     {
+        private readonly IEventAggregator _eventAggregator;
         private readonly IScreenConfiguration _screenConfiguration;
         private readonly ILevelConfiguration _levelConfiguration;
 
-        public LevelFactory(IScreenConfiguration screenConfiguration, ILevelConfiguration levelConfiguration)
+        public LevelFactory(IEventAggregator eventAggregator, IScreenConfiguration screenConfiguration,
+            ILevelConfiguration levelConfiguration)
         {
+            _eventAggregator = eventAggregator;
             _screenConfiguration = screenConfiguration;
             _levelConfiguration = levelConfiguration;
         }
 
         public ILevel CreateLevel()
         {
-            var paddle = new Paddle.Paddle(new Component.Component(
-                _levelConfiguration.PaddleHeight,
-                _levelConfiguration.PaddleWidth,
-                new Vector2(_screenConfiguration.ScreenWidth/2.0f - _levelConfiguration.PaddleWidth/2.0f,
-                    _screenConfiguration.ScreenHeight - _levelConfiguration.PaddleHeight*2),
-                _levelConfiguration.PaddleColor,
-                0.0f));
+            var paddle = new Paddle.Paddle(_eventAggregator,
+                new Component.Component(
+                    _levelConfiguration.PaddleHeight,
+                    _levelConfiguration.PaddleWidth,
+                    new Vector2(_screenConfiguration.ScreenWidth/2.0f - _levelConfiguration.PaddleWidth/2.0f,
+                        _screenConfiguration.ScreenHeight - _levelConfiguration.PaddleHeight*2),
+                    _levelConfiguration.PaddleColor,
+                    0.0f));
 
             var ball = new Ball.Ball(new Component.Component(
                 _levelConfiguration.BallSize,

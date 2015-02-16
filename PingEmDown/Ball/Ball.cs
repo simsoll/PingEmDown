@@ -4,16 +4,29 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using PingEmDown.Component;
+using PingEmDown.Messaging.Caliburn.Micro;
 
 namespace PingEmDown.Ball
 {
     public class Ball : IComponent
     {
+        private readonly IEventAggregator _eventAggregator;
         private readonly IComponent _component;
 
-        public Ball(IComponent component)
+        public Ball(IEventAggregator eventAggregator, IComponent component)
         {
+            _eventAggregator = eventAggregator;
             _component = component;
+        }
+
+        public void Load()
+        {
+            _eventAggregator.Subscribe(this);
+        }
+
+        public void Unload()
+        {
+            _eventAggregator.Unsubscribe(this);
         }
 
         public void Update(GameTime gameTime)

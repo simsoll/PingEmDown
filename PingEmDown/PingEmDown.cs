@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
 using PingEmDown.Configuration;
 using PingEmDown.Draw;
+using PingEmDown.Input;
 using PingEmDown.Input.Keyboard;
 using PingEmDown.Level;
 using PingEmDown.Messaging.Caliburn.Micro;
@@ -29,6 +30,7 @@ namespace PingEmDown
 
         private IEventAggregator _eventAggregator;
         private KeyboardManager _keyboardManager;
+        private PlayerInput _playerInput;
         private ScreenManager _screenManager;
 
 
@@ -72,18 +74,20 @@ namespace PingEmDown
             var texture = GetPlain2DTexture(1);
 
             _eventAggregator = new EventAggregator();
-            _keyboardManager = new KeyboardManager(_eventAggregator, TimeSpan.FromMilliseconds(500));
+            _keyboardManager = new KeyboardManager(_eventAggregator, TimeSpan.Zero);
+            _playerInput = new PlayerInput(_eventAggregator);
             var drawer = new Drawer(_spriteBatch, texture);
             var textDrawer = new Drawer(_spriteBatch, textTexture);
             var pixelTextDrawer = new PixelTextDrawer(textDrawer);
 
             var startScreen = new StartScreen(_eventAggregator, pixelTextDrawer, screenConfiguration, textConfiguration);
-            var levelFactory = new LevelFactory(screenConfiguration, levelConfiguration);
+            var levelFactory = new LevelFactory(_eventAggregator, screenConfiguration, levelConfiguration);
             var levelManager = new LevelManager(_eventAggregator, levelFactory, drawer);
             var gameScreen = new GameScreen(_eventAggregator, levelManager);
             _screenManager = new ScreenManager(_eventAggregator, startScreen, gameScreen);
 
             _keyboardManager.Load();
+            _playerInput.Load();
             _screenManager.Load();
         }
 

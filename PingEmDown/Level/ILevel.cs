@@ -11,6 +11,8 @@ namespace PingEmDown.Level
         IEnumerable<IComponent> Blocks { get; }
         IComponent Paddle { get; }
         IComponent Ball { get; }
+        void Load();
+        void Unload();
         void Update(GameTime gameTime);
     }
 }

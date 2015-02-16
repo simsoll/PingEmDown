@@ -1,19 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.Xna.Framework;
 using PingEmDown.Component;
+using PingEmDown.Input.Messages;
+using PingEmDown.Messaging.Caliburn.Micro;
+using PingEmDown.Paddle.Messages;
 
 namespace PingEmDown.Paddle
 {
-    public class Paddle : IComponent
+    public class Paddle : IComponent, IHandle<Move>
     {
-       private readonly IComponent _component;
+        private readonly IEventAggregator _eventAggregator;
+        private readonly IComponent _component;
 
-        public Paddle(IComponent component)
+        private float maxSpeed = 5;
+
+        public Paddle(IEventAggregator eventAggregator, IComponent component)
         {
+            _eventAggregator = eventAggregator;
             _component = component;
+        }
+
+        public void Load()
+        {
+            _eventAggregator.Subscribe(this);
+        }
+
+        public void Unload()
+        {
+            _eventAggregator.Unsubscribe(this);
         }
 
         public void Update(GameTime gameTime)
@@ -54,6 +72,16 @@ namespace PingEmDown.Paddle
         {
             get { return _component.Rotation; }
             set { _component.Rotation = value; }
+        }
+
+        public void Handle(Move message)
+        {
+            Position += maxSpeed*message.Direction;
+
+            _eventAggregator.Publish(new PaddleMoved
+            {
+                Paddle = this
+            });
         }
     }
 }

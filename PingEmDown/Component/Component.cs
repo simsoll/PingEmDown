@@ -28,6 +28,14 @@ namespace PingEmDown.Component
         public Color Color { get; set; }
         public float Rotation { get; set; }
 
+        public void Load()
+        {
+        }
+
+        public void Unload()
+        {
+        }
+
         public void Update(GameTime gameTime)
         {
         }
