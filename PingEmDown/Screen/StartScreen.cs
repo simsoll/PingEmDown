@@ -32,12 +32,12 @@ namespace PingEmDown.Screen
             _textConfiguration = textConfiguration;
 
             _titleText = "Ping Em Down";
-            _titleTextPosition = new Vector2(_screenConfiguration.ScreenWidth / 2.0f, _screenConfiguration.ScreenHeight / 2.0f);
+            _titleTextPosition = new Vector2(_screenConfiguration.ScreenWidth / 2.0f, _screenConfiguration.ScreenHeight / 4.0f);
 
             _takeActionText = "Press any key to start";
             _showTakeActionText = true;
             _takActionTextPosition = new Vector2(_screenConfiguration.ScreenWidth/2.0f,
-                _screenConfiguration.ScreenHeight - _screenConfiguration.ScreenHeight / 4.0f);
+                _screenConfiguration.ScreenHeight / 2.0f);
 
             _textBlickTimeSpan = TimeSpan.FromMilliseconds(750);
             _timeSinceLastBlick = TimeSpan.Zero;
