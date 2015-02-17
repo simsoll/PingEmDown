@@ -1,16 +1,18 @@
 ﻿using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 using Microsoft.Xna.Framework;
-using PingEmDown.Component;
+using PingEmDown.Components.Ball;
+using PingEmDown.Components.Block;
+using PingEmDown.Components.Paddle;
+using PingEmDown.Components.Wall;
 
 namespace PingEmDown.Level
 {
     public interface ILevel
     {
-        IEnumerable<IComponent> Walls { get; }
-        IEnumerable<IComponent> Blocks { get; }
-        IComponent Paddle { get; }
-        IComponent Ball { get; }
+        IEnumerable<IWall> Walls { get; }
+        IEnumerable<IBlock> Blocks { get; }
+        IPaddle Paddle { get; }
+        IBall Ball { get; }
         void Load();
         void Unload();
         void Update(GameTime gameTime);

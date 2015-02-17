@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Security.Cryptography;
 using Microsoft.Xna.Framework;
-using PingEmDown.Component;
+using PingEmDown.Components.Ball;
+using PingEmDown.Components.Block;
+using PingEmDown.Components.Paddle;
+using PingEmDown.Components.Wall;
 using PingEmDown.Configuration;
 using PingEmDown.Messaging.Caliburn.Micro;
 
@@ -23,47 +25,53 @@ namespace PingEmDown.Level
 
         public ILevel CreateLevel()
         {
-            var paddle = new Paddle.Paddle(_eventAggregator,
-                new Component.Component(
-                    _levelConfiguration.PaddleHeight,
-                    _levelConfiguration.PaddleWidth,
-                    new Vector2(_screenConfiguration.ScreenWidth/2.0f - _levelConfiguration.PaddleWidth/2.0f,
-                        _screenConfiguration.ScreenHeight - _levelConfiguration.PaddleHeight*2),
-                    _levelConfiguration.PaddleColor,
+            var paddle = new Paddle(_eventAggregator,
+                _levelConfiguration.PaddleHeight,
+                _levelConfiguration.PaddleWidth,
+                new Vector2(_screenConfiguration.ScreenWidth/2.0f - _levelConfiguration.PaddleWidth/2.0f,
+                    _screenConfiguration.ScreenHeight - _levelConfiguration.PaddleHeight*2),
+                _levelConfiguration.PaddleColor);
+
+            var ball = new Ball(
+                new AttachedBall(
+                    _levelConfiguration.BallSize,
+                    _levelConfiguration.BallSize,
+                    new Vector2(_screenConfiguration.ScreenWidth/2.0f - _levelConfiguration.BallSize/2.0f,
+                        paddle.Position.Y - _levelConfiguration.BallSize),
+                    _levelConfiguration.BallColor,
+                    0.0f),
+                new ReleasedBall(_levelConfiguration.BallSize,
+                    _levelConfiguration.BallSize,
+                    new Vector2(_screenConfiguration.ScreenWidth/2.0f - _levelConfiguration.BallSize/2.0f,
+                        paddle.Position.Y - _levelConfiguration.BallSize),
+                    _levelConfiguration.BallColor,
                     0.0f));
 
-            var ball = new Ball.Ball(new Component.Component(
-                _levelConfiguration.BallSize,
-                _levelConfiguration.BallSize,
-                new Vector2(_screenConfiguration.ScreenWidth/2.0f - _levelConfiguration.BallSize/2.0f,
-                    paddle.Position.Y - _levelConfiguration.BallSize),
-                _levelConfiguration.BallColor,
-                0.0f));
-
             return new Level(
+                _eventAggregator,
                 CreateWalls(),
                 CreateBlocks(),
                 paddle,
                 ball);
         }
 
-        private IEnumerable<IComponent> CreateWalls()
+        private IEnumerable<IWall> CreateWalls()
         {
-            return new List<IComponent>
+            return new List<IWall>
             {
-                new Component.Component(
+                new Wall(
                     _levelConfiguration.WallWidth,
                     _screenConfiguration.ScreenWidth,
                     Vector2.Zero,
                     _levelConfiguration.WallColor,
                     0.0f),
-                new Component.Component(
+                new Wall(
                     _screenConfiguration.ScreenHeight - _levelConfiguration.WallWidth,
                     _levelConfiguration.WallWidth,
                     new Vector2(0, _levelConfiguration.WallWidth),
                     _levelConfiguration.WallColor,
                     0.0f),
-                new Component.Component(
+                new Wall(
                     _screenConfiguration.ScreenHeight - _levelConfiguration.WallWidth,
                     _levelConfiguration.WallWidth,
                     new Vector2(_screenConfiguration.ScreenWidth - _levelConfiguration.WallWidth,
@@ -73,9 +81,9 @@ namespace PingEmDown.Level
             };
         }
 
-        private IEnumerable<IComponent> CreateBlocks()
+        private IEnumerable<IBlock> CreateBlocks()
         {
-            var block = new List<IComponent>();
+            var block = new List<IBlock>();
             var screenWidth = _screenConfiguration.ScreenWidth;
             var wallWidth = _levelConfiguration.WallWidth;
             var blockWallOffset = _levelConfiguration.BlockWallOffset;
@@ -93,7 +101,7 @@ namespace PingEmDown.Level
                 {
                     var y = wallWidth + blockWallOffset + row*(blockHeight + blockBlockOffset);
 
-                    block.Add(new Component.Component(blockHeight, blockWidth, new Vector2(x, y), blockColor, 0.0f));
+                    block.Add(new Block(blockHeight, blockWidth, new Vector2(x, y), blockColor, 0.0f));
                 }
             }
 

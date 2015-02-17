@@ -35,7 +35,15 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Ball\Ball.cs" />
+    <Compile Include="Components\Ball\AttachedBall.cs" />
+    <Compile Include="Components\Ball\Ball.cs" />
+    <Compile Include="Components\Ball\IBall.cs" />
+    <Compile Include="Components\Ball\ReleasedBall.cs" />
+    <Compile Include="Components\Block\Block.cs" />
+    <Compile Include="Components\Block\IBlock.cs" />
+    <Compile Include="Components\Paddle\IPaddle.cs" />
+    <Compile Include="Components\Wall\IWall.cs" />
+    <Compile Include="Components\Wall\Wall.cs" />
     <Compile Include="Configuration\GameScreenConfiguration.cs" />
     <Compile Include="Configuration\ILevelConfiguration.cs" />
     <Compile Include="Configuration\IScreenConfiguration.cs" />
@@ -55,12 +63,10 @@
     <Compile Include="Level\ILevelFactory.cs" />
     <Compile Include="Level\ILevelManager.cs" />
     <Compile Include="Level\LevelFactory.cs" />
-    <Compile Include="Paddle\Messages\PaddleMoved.cs" />
-    <Compile Include="Paddle\Paddle.cs" />
-    <Compile Include="Component\IComponent.cs" />
+    <Compile Include="Level\Messages\PaddleMoved.cs" />
+    <Compile Include="Components\Paddle\Paddle.cs" />
     <Compile Include="Level\Level.cs" />
     <Compile Include="Level\LevelManager.cs" />
-    <Compile Include="Component\Component.cs" />
     <Compile Include="Randomizer\IRandomizer.cs" />
     <Compile Include="Randomizer\Randomizer.cs" />
     <Compile Include="Screen\GameScreen.cs" />
@@ -102,7 +108,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\" />
-    <Folder Include="Level\Messages\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

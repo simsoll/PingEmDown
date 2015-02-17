@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using PingEmDown.Component;
 
 namespace PingEmDown.Draw
 {
@@ -28,11 +25,6 @@ namespace PingEmDown.Draw
         public void Draw(Rectangle destinationRectangle, Color color, float rotation)
         {
             _spriteBatch.Draw(_texture, destinationRectangle, _sourceRetangle, color, rotation, Vector2.Zero, SpriteEffects.None, 0.0f);
-        }
-
-        public void Draw(IComponent component)
-        {
-            _spriteBatch.Draw(_texture, component.Boundings, _sourceRetangle, component.Color, component.Rotation, Vector2.Zero, SpriteEffects.None, 0.0f);
         }
     }
 }

@@ -1,8 +1,8 @@
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 
-namespace PingEmDown.Component
+namespace PingEmDown.Components.Wall
 {
-    public class Component : IComponent
+    public class Wall : IWall
     {
         public int Height { get; set; }
         public int Width { get; set; }
@@ -10,13 +10,10 @@ namespace PingEmDown.Component
 
         public Rectangle Boundings
         {
-            get
-            {
-                return new Rectangle((int)Position.X, (int)Position.Y, Width, Height);
-            }
+            get { return new Rectangle((int) Position.X, (int) Position.Y, Width, Height); }
         }
 
-        public Component(int height, int width, Vector2 position, Color color, float rotation)
+        public Wall(int height, int width, Vector2 position, Color color, float rotation)
         {
             Rotation = rotation;
             Color = color;
@@ -27,14 +24,6 @@ namespace PingEmDown.Component
 
         public Color Color { get; set; }
         public float Rotation { get; set; }
-
-        public void Load()
-        {
-        }
-
-        public void Unload()
-        {
-        }
 
         public void Update(GameTime gameTime)
         {
