@@ -35,13 +35,14 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Components\Ball\AttachedBall.cs" />
+    <Compile Include="Components\Ball\StickyBall.cs" />
     <Compile Include="Components\Ball\Ball.cs" />
     <Compile Include="Components\Ball\IBall.cs" />
-    <Compile Include="Components\Ball\ReleasedBall.cs" />
+    <Compile Include="Components\Ball\FlyingBall.cs" />
     <Compile Include="Components\Block\Block.cs" />
     <Compile Include="Components\Block\IBlock.cs" />
     <Compile Include="Components\Paddle\IPaddle.cs" />
+    <Compile Include="Components\Paddle\Messages\ReleasingBall.cs" />
     <Compile Include="Components\Wall\IWall.cs" />
     <Compile Include="Components\Wall\Wall.cs" />
     <Compile Include="Configuration\GameScreenConfiguration.cs" />

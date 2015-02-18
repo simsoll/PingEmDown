@@ -13,7 +13,7 @@ using PingEmDown.Messaging.Caliburn.Micro;
 
 namespace PingEmDown.Level
 {
-    public class Level : ILevel, IHandle<Move>
+    public class Level : ILevel
     {
         private readonly IEventAggregator _eventAggregator;
         public IEnumerable<IWall> Walls { get; private set; }
@@ -34,26 +34,21 @@ namespace PingEmDown.Level
         public void Load()
         {
             _eventAggregator.Subscribe(this);
+            Paddle.Load();
+            Ball.Load();
         }
 
         public void Unload()
         {
+            Ball.Unload();
+            Paddle.Unload();
             _eventAggregator.Unsubscribe(this);
         }
 
         public void Update(GameTime gameTime)
         {
+            Paddle.Update(gameTime);
             Ball.Update(gameTime);
-        }
-
-        public void Handle(Move message)
-        {
-            Paddle.Move(message.Direction);
-
-            _eventAggregator.Publish(new PaddleMoved
-            {
-                Paddle = Paddle
-            });
         }
     }
 }

@@ -4,10 +4,13 @@ namespace PingEmDown.Components.Paddle
 {
     public interface IPaddle
     {
+        Vector2 Velocity { get; }
         Rectangle Boundings { get; }
         Color Color { get; }
         float Rotation { get; }
 
-        void Move(Vector2 direction);
+        void Load();
+        void Unload();
+        void Update(GameTime gameTime);
     }
 }

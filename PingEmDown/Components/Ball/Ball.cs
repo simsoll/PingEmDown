@@ -1,31 +1,61 @@
 ﻿using Microsoft.Xna.Framework;
+using PingEmDown.Components.Paddle;
+using PingEmDown.Components.Paddle.Messages;
 using PingEmDown.Input.Messages;
+using PingEmDown.Level.Messages;
 using PingEmDown.Messaging.Caliburn.Micro;
 
 namespace PingEmDown.Components.Ball
 {
-    public class Ball : IBall, IHandle<ReleaseBall>
+    public class Ball : IBall, IHandle<ReleasingBall>
     {
+        private readonly IEventAggregator _eventAggregator;
+        private IBall _stickyState;
+        private IBall _flyingState;
+
         private IBall _currentState;
-        private IBall _attachedState;
-        private IBall _releasedState;
 
-        public Ball(IBall attachedState, IBall releasedState)
+        public Ball(IEventAggregator eventAggregator, IBall stickyState, IBall flyingState)
         {
-            _attachedState = attachedState;
-            _releasedState = releasedState;
+            _eventAggregator = eventAggregator;
+            _stickyState = stickyState;
+            _flyingState = flyingState;
 
-            _currentState = _attachedState;
+            _currentState = _stickyState;
         }
 
         private void SetState(IBall state)
         {
+            if (state == null)
+            {
+                return;
+            }
+
+            if (_currentState != null)
+            {
+                _currentState.Unload();
+            }
+
             _currentState = state;
+            _currentState.Load();
+
         }
 
         public void Update(GameTime gameTime)
         {
             _currentState.Update(gameTime);
+        }
+
+        public void Load()
+        {
+            _eventAggregator.Subscribe(this);
+            _currentState.Load();
+        }
+
+        public void Unload()
+        {
+            _currentState.Unload();
+            _eventAggregator.Unsubscribe(this);
         }
 
         public int Height
@@ -41,6 +71,13 @@ namespace PingEmDown.Components.Ball
         public Vector2 Position
         {
             get { return _currentState.Position; }
+            set { _currentState.Position = value; }
+        }
+
+        public Vector2 Direction
+        {
+            get { return _currentState.Position; }
+            set { _currentState.Position = value; }
         }
 
         public Rectangle Boundings
@@ -58,9 +95,17 @@ namespace PingEmDown.Components.Ball
             get { return _currentState.Rotation; }
         }
 
-        public void Handle(ReleaseBall message)
+        public void Handle(ReleasingBall message)
         {
-            SetState(_releasedState);
+            SetState(_flyingState);
+
+            var paddle = message.Paddle;
+
+            var x = paddle.Boundings.X + paddle.Boundings.Width / 2.0f - Width / 2.0f;
+            var y = paddle.Boundings.Y - Height;
+
+            _currentState.Position = new Vector2(x, y);
+            _currentState.Direction = Vector2.Normalize(paddle.Velocity + new Vector2(0, -1));
         }
     }
 }

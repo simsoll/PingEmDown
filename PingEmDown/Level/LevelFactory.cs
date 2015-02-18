@@ -32,15 +32,16 @@ namespace PingEmDown.Level
                     _screenConfiguration.ScreenHeight - _levelConfiguration.PaddleHeight*2),
                 _levelConfiguration.PaddleColor);
 
-            var ball = new Ball(
-                new AttachedBall(
+            var ball = new Ball(_eventAggregator,
+                new StickyBall(_eventAggregator,
                     _levelConfiguration.BallSize,
                     _levelConfiguration.BallSize,
                     new Vector2(_screenConfiguration.ScreenWidth/2.0f - _levelConfiguration.BallSize/2.0f,
                         paddle.Position.Y - _levelConfiguration.BallSize),
                     _levelConfiguration.BallColor,
                     0.0f),
-                new ReleasedBall(_levelConfiguration.BallSize,
+                new FlyingBall(_eventAggregator, 
+                    _levelConfiguration.BallSize,
                     _levelConfiguration.BallSize,
                     new Vector2(_screenConfiguration.ScreenWidth/2.0f - _levelConfiguration.BallSize/2.0f,
                         paddle.Position.Y - _levelConfiguration.BallSize),
