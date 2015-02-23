@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using MathNet.Numerics.LinearAlgebra.Double;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using PingEmDown.Components.Ball.Messages;
 using PingEmDown.Components.Wall;
 using PingEmDown.Extensions;
@@ -35,9 +36,13 @@ namespace PingEmDown.Collision
             {
                 var wall = walls.First(w => paddle.Boundings.Intersects(w.Boundings));
 
-                var direction = Vector2.Normalize(paddle.Velocity);
+                var paddleBoundingsLastFrame = new Rectangle((int) (paddle.Boundings.X - paddle.Velocity.X),
+                    (int) (paddle.Boundings.Y - paddle.Velocity.Y), paddle.Boundings.Width, paddle.Boundings.Height);
 
-                paddle.Position += CollisionPenetration(wall.Boundings, paddle.Boundings, direction);
+                var collisionPenetration = CollisionPenetration(wall.Boundings, paddle.Boundings,
+                    paddleBoundingsLastFrame);
+
+                paddle.Position -= collisionPenetration.Depth;
                 paddle.Velocity = Vector2.Zero;
             }
         }
@@ -51,66 +56,77 @@ namespace PingEmDown.Collision
             {
                 var wall = walls.First(w => ball.Boundings.Intersects(w.Boundings));
 
-                var direction = Vector2.Normalize(ball.Velocity);
+                var ballBoundingsLastFrame = new Rectangle((int) (ball.Boundings.X - ball.Velocity.X),
+                    (int) (ball.Boundings.Y - ball.Velocity.Y), ball.Boundings.Width, ball.Boundings.Height);
 
-                ball.Position += CollisionPenetration(wall.Boundings, ball.Boundings, direction);
-                ball.Velocity = Vector2.Zero;
-            }
-        }
+                var collisionPenetration = CollisionPenetration(wall.Boundings, ball.Boundings,
+                    ballBoundingsLastFrame);
 
-        private Vector2 CollisionPenetration(Rectangle struckObject, Rectangle movingObject, Vector2 direction)
-        {
-            var perpendicularDirection = Vector2.Normalize(new Vector2(-direction.Y, direction.X));
-
-            var projectionMatrix = ProjectionMatrix(perpendicularDirection);
-
-            var movingProjectedEdges = ProjectRectangle(movingObject, projectionMatrix);
-            var struckProjectedEdges = ProjectRectangle(struckObject, projectionMatrix);
-
-            if (direction.X < 0)
-            {
-                var movingProjectionPoint = movingProjectedEdges.OrderBy(x => x.X).First();
-                var struckProjectionPoint = struckProjectedEdges.OrderByDescending(x => x.X).First();
-
-                return struckProjectionPoint - movingProjectionPoint;
-            }
-            
-            if (direction.X > 0)
-            {
-                var movingProjectionPoint = movingProjectedEdges.OrderByDescending(x => x.X).First();
-                var struckProjectionPoint = struckProjectedEdges.OrderBy(x => x.X).First();
-
-                return struckProjectionPoint - movingProjectionPoint;
-            }
-
-            return Vector2.Zero;
-        }
-
-        private IEnumerable<Vector2> ProjectRectangle(Rectangle rectangle, DenseMatrix projectionMatrix)
-        {
-            var projectedEdges = new List<Vector2>();
-
-            foreach (var edge in rectangle.Edges())
-            {
-                var edgeAsDenseVector = new DenseVector(new double[] { edge.X, edge.Y });
-                var projectedEdge = projectionMatrix * edgeAsDenseVector;
-
-                projectedEdges.Add(new Vector2((float)projectedEdge[0], (float)projectedEdge[1]));
-            }
-
-            return projectedEdges;
-        }
-
-        private DenseMatrix ProjectionMatrix(Vector2 perpendicular)
-        {
-            return new DenseMatrix(2, 2,
-                new[] 
+                ball.Position -= collisionPenetration.Depth;
+                switch (collisionPenetration.From)
                 {
-                    1.0 - perpendicular.X*perpendicular.X, 
-                    -perpendicular.X*perpendicular.Y, 
-                    -perpendicular.X*perpendicular.Y, 
-                    1 - perpendicular.Y*perpendicular.Y
+                    case Direction.Left:
+                    case Direction.Right:
+                        ball.Velocity *= new Vector2(-1, 1);
+                        break;
+                    case Direction.Top:
+                    case Direction.Bottom:
+                        ball.Velocity *= new Vector2(1, -1);
+                        break;
+                }
+            }
+        }
+
+        private CollisionPenetration CollisionPenetration(
+            Rectangle struckObject, 
+            Rectangle movingObject,
+            Rectangle movingObjectLastFrame)
+        {
+            var penetrations = new List<CollisionPenetration>();
+
+            if (movingObject.Left <= struckObject.Right && struckObject.Right <= movingObjectLastFrame.Left)
+            {
+                penetrations.Add(new CollisionPenetration
+                {
+                    Depth = new Vector2(movingObject.Left - struckObject.Right, 0),
+                    From = Direction.Left
                 });
+            }
+            if (movingObjectLastFrame.Right <= struckObject.Left && struckObject.Left <= movingObject.Right)
+            {
+                penetrations.Add(new CollisionPenetration
+                {
+                    Depth = new Vector2(movingObject.Right - struckObject.Left, 0),
+                    From = Direction.Right
+                });
+            }
+            if (movingObjectLastFrame.Bottom <= struckObject.Top && struckObject.Top <= movingObject.Bottom)
+            {
+                penetrations.Add(new CollisionPenetration
+                {
+                    Depth = new Vector2(0, movingObject.Bottom - struckObject.Top),
+                    From = Direction.Top
+                });
+            }
+            if (movingObject.Top <= struckObject.Bottom && struckObject.Bottom <= movingObjectLastFrame.Top)
+            {
+                penetrations.Add(new CollisionPenetration
+                {
+                    Depth = new Vector2(0, movingObject.Top - struckObject.Bottom),
+                    From = Direction.Bottom
+                });
+            }
+
+            if (!penetrations.Any())
+            {
+                return new CollisionPenetration
+                {
+                    Depth = Vector2.Zero,
+                    From = Direction.Unknown
+                };
+            }
+
+            return penetrations.OrderBy(p => Math.Abs(p.Depth.X) + Math.Abs(p.Depth.Y)).FirstOrDefault();
         }
 
         public void Handle(LevelLoaded message)
@@ -135,5 +151,20 @@ namespace PingEmDown.Collision
         {
             _eventAggregator.Unsubscribe(this);
         }
+    }
+
+    public class CollisionPenetration
+    {
+        public Vector2 Depth { get; set; }
+        public Direction From { get; set; }
+    }
+
+    public enum Direction
+    {
+        Unknown = 0,
+        Left,
+        Right,
+        Top,
+        Bottom
     }
 }

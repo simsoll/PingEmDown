@@ -8,7 +8,7 @@ namespace PingEmDown.Components.Ball
     public class FlyingBall : IBall
     {
         private readonly IEventAggregator _eventAggregator;
-        private readonly float _speed = 3;
+        private readonly float _speed = 5;
 
         public FlyingBall(IEventAggregator eventAggregator, int height, int width, Vector2 position, Color color, float rotation)
         {
@@ -50,7 +50,13 @@ namespace PingEmDown.Components.Ball
 
         public Vector2 Position { get; set; }
 
-        public Vector2 Velocity { get; set; }
+        private Vector2 _velocity;
+
+        public Vector2 Velocity
+        {
+            get { return _velocity; }
+            set { _velocity = new Vector2((int)value.X, (int)value.Y); }
+        }
 
         public Rectangle Boundings
         {

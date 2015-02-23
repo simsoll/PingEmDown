@@ -58,7 +58,13 @@ namespace PingEmDown.Components.Paddle
 
         public Vector2 Position { get; set; }
 
-        public Vector2 Velocity { get; set; }
+        private Vector2 _velocity;
+
+        public Vector2 Velocity
+        {
+            get { return _velocity; }
+            set { _velocity = new Vector2((int) value.X, (int) value.Y); }
+        }
 
         public Rectangle Boundings
         {
