@@ -9,6 +9,7 @@ namespace PingEmDown.Level
 {
     public interface ILevel
     {
+        string Name { get; }
         IEnumerable<IWall> Walls { get; }
         IEnumerable<IBlock> Blocks { get; }
         IPaddle Paddle { get; }

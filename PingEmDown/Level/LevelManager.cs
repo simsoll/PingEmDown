@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using PingEmDown.Collision;
 using PingEmDown.Draw;
 using PingEmDown.Messaging.Caliburn.Micro;
 
@@ -11,12 +12,14 @@ namespace PingEmDown.Level
     public class LevelManager : ILevelManager
     {
         private readonly IEventAggregator _eventAggregator;
+        private readonly ICollisionDetector _collisionDetector;
         private readonly ILevel _level;
         private readonly IDrawer _drawer;
 
-        public LevelManager(IEventAggregator eventAggregator, ILevelFactory levelFactory, IDrawer drawer)
+        public LevelManager(IEventAggregator eventAggregator, ILevelFactory levelFactory, ICollisionDetector collisionDetector, IDrawer drawer)
         {
             _eventAggregator = eventAggregator;
+            _collisionDetector = collisionDetector;
             _level = levelFactory.CreateLevel();
             _drawer = drawer;
         }
@@ -24,12 +27,14 @@ namespace PingEmDown.Level
         public void Load()
         {
             _eventAggregator.Subscribe(this);
+            _collisionDetector.Load();
             _level.Load();
         }
 
         public void Unload()
         {
             _level.Unload();
+            _collisionDetector.Unload();
             _eventAggregator.Unsubscribe(this);
         }
 

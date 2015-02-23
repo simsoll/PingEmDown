@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using PingEmDown.Components.Paddle.Messages;
 using PingEmDown.Input.Messages;
@@ -55,9 +56,9 @@ namespace PingEmDown.Components.Paddle
 
         public int Width { get; private set; }
 
-        public Vector2 Position { get; private set; }
+        public Vector2 Position { get; set; }
 
-        public Vector2 Velocity { get; private set; }
+        public Vector2 Velocity { get; set; }
 
         public Rectangle Boundings
         {

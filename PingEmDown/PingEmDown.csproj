@@ -35,6 +35,9 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Collision\CollisionDetector.cs" />
+    <Compile Include="Collision\ICollisionDetector.cs" />
+    <Compile Include="Components\Ball\Messages\BallMoved.cs" />
     <Compile Include="Components\Ball\StickyBall.cs" />
     <Compile Include="Components\Ball\Ball.cs" />
     <Compile Include="Components\Ball\IBall.cs" />
@@ -53,6 +56,7 @@
     <Compile Include="Configuration\TextConfiguration.cs" />
     <Compile Include="Draw\IDrawer.cs" />
     <Compile Include="Draw\Drawer.cs" />
+    <Compile Include="Extensions\RectangleExtensions.cs" />
     <Compile Include="Input\Keyboard\KeyboardManager.cs" />
     <Compile Include="Input\Keyboard\Messages\KeyHeld.cs" />
     <Compile Include="Input\Keyboard\Messages\KeyPressed.cs" />
@@ -64,6 +68,8 @@
     <Compile Include="Level\ILevelFactory.cs" />
     <Compile Include="Level\ILevelManager.cs" />
     <Compile Include="Level\LevelFactory.cs" />
+    <Compile Include="Level\Messages\LevelLoaded.cs" />
+    <Compile Include="Level\Messages\LevelUnloaded.cs" />
     <Compile Include="Level\Messages\PaddleMoved.cs" />
     <Compile Include="Components\Paddle\Paddle.cs" />
     <Compile Include="Level\Level.cs" />
@@ -88,6 +94,9 @@
     <Compile Include="Screen\ScreenManager.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="MathNet.Numerics">
+      <HintPath>packages\MathNet.Numerics.3.5.0\lib\net40\MathNet.Numerics.dll</HintPath>
+    </Reference>
     <Reference Include="OpenTK">
       <HintPath>$(MSBuildExtensionsPath)\..\MonoGame\v3.0\Assemblies\WindowsGL\OpenTK.dll</HintPath>
     </Reference>
@@ -97,6 +106,7 @@
     <Reference Include="Lidgren.Network">
       <HintPath>$(MSBuildExtensionsPath)\..\MonoGame\v3.0\Assemblies\WindowsGL\Lidgren.Network.dll</HintPath>
     </Reference>
+    <Reference Include="System.Numerics" />
     <Reference Include="Tao.Sdl">
       <HintPath>$(MSBuildExtensionsPath)\..\MonoGame\v3.0\Assemblies\WindowsGL\Tao.Sdl.dll</HintPath>
     </Reference>

@@ -74,10 +74,10 @@ namespace PingEmDown.Components.Ball
             set { _currentState.Position = value; }
         }
 
-        public Vector2 Direction
+        public Vector2 Velocity
         {
-            get { return _currentState.Position; }
-            set { _currentState.Position = value; }
+            get { return _currentState.Velocity; }
+            set { _currentState.Velocity = value; }
         }
 
         public Rectangle Boundings
@@ -105,7 +105,7 @@ namespace PingEmDown.Components.Ball
             var y = paddle.Boundings.Y - Height;
 
             _currentState.Position = new Vector2(x, y);
-            _currentState.Direction = Vector2.Normalize(paddle.Velocity + new Vector2(0, -1));
+            _currentState.Velocity = Vector2.Normalize(paddle.Velocity + new Vector2(0, -1));
         }
     }
 }

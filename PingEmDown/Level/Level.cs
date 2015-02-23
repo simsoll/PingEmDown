@@ -16,6 +16,7 @@ namespace PingEmDown.Level
     public class Level : ILevel
     {
         private readonly IEventAggregator _eventAggregator;
+        public string Name { get { return "Level 1"; } }
         public IEnumerable<IWall> Walls { get; private set; }
         public IEnumerable<IBlock> Blocks { get; private set; }
         public IPaddle Paddle { get; private set; }
@@ -36,6 +37,11 @@ namespace PingEmDown.Level
             _eventAggregator.Subscribe(this);
             Paddle.Load();
             Ball.Load();
+
+            _eventAggregator.Publish(new LevelLoaded
+            {
+                Level = this
+            });
         }
 
         public void Unload()
@@ -43,6 +49,11 @@ namespace PingEmDown.Level
             Ball.Unload();
             Paddle.Unload();
             _eventAggregator.Unsubscribe(this);
+
+            _eventAggregator.Publish(new LevelLoaded
+            {
+                Level = this
+            });
         }
 
         public void Update(GameTime gameTime)

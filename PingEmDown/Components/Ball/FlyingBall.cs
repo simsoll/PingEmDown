@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using PingEmDown.Components.Ball.Messages;
 using PingEmDown.Components.Paddle;
 using PingEmDown.Messaging.Caliburn.Micro;
 
@@ -24,6 +25,11 @@ namespace PingEmDown.Components.Ball
         public void Update(GameTime gameTime)
         {
             Position += Velocity;
+
+            _eventAggregator.Publish(new BallMoved
+            {
+                Ball = this
+            });
         }
 
         public void Load()
@@ -44,7 +50,7 @@ namespace PingEmDown.Components.Ball
 
         public Vector2 Position { get; set; }
 
-        public Vector2 Velocity { get { return _speed * Direction; } }
+        public Vector2 Velocity { get; set; }
 
         public Rectangle Boundings
         {

@@ -18,14 +18,10 @@ namespace PingEmDown.Components.Ball
             Width = width;
             Height = height;
 
-            Direction = Vector2.Zero;
+            Velocity = Vector2.Zero;
         }
 
         public void Update(GameTime gameTime)
-        {
-        }
-
-        public void SetDirection(Vector2 direction)
         {
         }
 
@@ -43,9 +39,9 @@ namespace PingEmDown.Components.Ball
 
         public int Width { get; private set; }
 
-        public Vector2 Direction { get; set; }
-
         public Vector2 Position { get; set; }
+
+        public Vector2 Velocity { get; set; }
 
         public Rectangle Boundings
         {

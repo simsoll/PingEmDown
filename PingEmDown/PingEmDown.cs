@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
+using PingEmDown.Collision;
 using PingEmDown.Configuration;
 using PingEmDown.Draw;
 using PingEmDown.Input;
@@ -76,13 +77,14 @@ namespace PingEmDown
             _eventAggregator = new EventAggregator();
             _keyboardManager = new KeyboardManager(_eventAggregator, TimeSpan.Zero);
             _playerInput = new PlayerInput(_eventAggregator);
+            var collisionDetector = new CollisionDetector(_eventAggregator);
             var drawer = new Drawer(_spriteBatch, texture);
             var textDrawer = new Drawer(_spriteBatch, textTexture);
             var pixelTextDrawer = new PixelTextDrawer(textDrawer);
 
             var startScreen = new StartScreen(_eventAggregator, pixelTextDrawer, screenConfiguration, textConfiguration);
             var levelFactory = new LevelFactory(_eventAggregator, screenConfiguration, levelConfiguration);
-            var levelManager = new LevelManager(_eventAggregator, levelFactory, drawer);
+            var levelManager = new LevelManager(_eventAggregator, levelFactory, collisionDetector, drawer);
             var gameScreen = new GameScreen(_eventAggregator, levelManager);
             _screenManager = new ScreenManager(_eventAggregator, startScreen, gameScreen);
 

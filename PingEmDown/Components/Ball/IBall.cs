@@ -8,7 +8,7 @@ namespace PingEmDown.Components.Ball
         int Height { get; }
         int Width { get; }
         Vector2 Position { get; set; }
-        Vector2 Direction { get; set; }
+        Vector2 Velocity { get; set; }
         Rectangle Boundings { get; }
         Color Color { get; }
         float Rotation { get; }
