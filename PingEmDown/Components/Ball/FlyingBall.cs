@@ -2,13 +2,14 @@ using Microsoft.Xna.Framework;
 using PingEmDown.Components.Ball.Messages;
 using PingEmDown.Components.Paddle;
 using PingEmDown.Messaging.Caliburn.Micro;
+using PingEmDown.Rectangle;
 
 namespace PingEmDown.Components.Ball
 {
     public class FlyingBall : IBall
     {
         private readonly IEventAggregator _eventAggregator;
-        private readonly float _speed = 5;
+        private readonly float _speed = 6;
 
         public FlyingBall(IEventAggregator eventAggregator, int height, int width, Vector2 position, Color color, float rotation)
         {
@@ -50,19 +51,13 @@ namespace PingEmDown.Components.Ball
 
         public Vector2 Position { get; set; }
 
-        private Vector2 _velocity;
+        public Vector2 Velocity { get; set; }
 
-        public Vector2 Velocity
-        {
-            get { return _velocity; }
-            set { _velocity = new Vector2((int)value.X, (int)value.Y); }
-        }
-
-        public Rectangle Boundings
+        public IRectangle Boundings
         {
             get
             {
-                return new Rectangle((int)Position.X, (int)Position.Y, Width, Height);
+                return new Rectangle.Rectangle(Position.X, Position.Y, Width, Height);
             }
         }
 

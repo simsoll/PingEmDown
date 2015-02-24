@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using PingEmDown.Rectangle;
 
 namespace PingEmDown.Extensions
 {
     public static class RectangleExtensions
     {
-        public static IEnumerable<Vector2> Edges(this Rectangle rectangle)
+        public static IEnumerable<Vector2> Edges(this IRectangle rectangle)
         {
             return new List<Vector2>
                 {

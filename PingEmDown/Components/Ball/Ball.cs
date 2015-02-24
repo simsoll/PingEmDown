@@ -4,6 +4,7 @@ using PingEmDown.Components.Paddle.Messages;
 using PingEmDown.Input.Messages;
 using PingEmDown.Level.Messages;
 using PingEmDown.Messaging.Caliburn.Micro;
+using PingEmDown.Rectangle;
 
 namespace PingEmDown.Components.Ball
 {
@@ -80,7 +81,7 @@ namespace PingEmDown.Components.Ball
             set { _currentState.Velocity = value; }
         }
 
-        public Rectangle Boundings
+        public IRectangle Boundings
         {
             get { return _currentState.Boundings; }
         }

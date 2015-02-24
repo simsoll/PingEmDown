@@ -2,6 +2,7 @@
 using PingEmDown.Components.Paddle;
 using PingEmDown.Level.Messages;
 using PingEmDown.Messaging.Caliburn.Micro;
+using PingEmDown.Rectangle;
 
 namespace PingEmDown.Components.Ball
 {
@@ -43,11 +44,11 @@ namespace PingEmDown.Components.Ball
 
         public Vector2 Velocity { get; set; }
 
-        public Rectangle Boundings
+        public IRectangle Boundings
         {
             get
             {
-                return new Rectangle((int)Position.X, (int)Position.Y, Width, Height);
+                return new Rectangle.Rectangle(Position.X, Position.Y, Width, Height);
             }
         }
 

@@ -76,6 +76,7 @@
     <Compile Include="Level\LevelManager.cs" />
     <Compile Include="Randomizer\IRandomizer.cs" />
     <Compile Include="Randomizer\Randomizer.cs" />
+    <Compile Include="Rectangle\IRectangle.cs" />
     <Compile Include="Screen\GameScreen.cs" />
     <Compile Include="Screen\Messages\StartGame.cs" />
     <Compile Include="Screen\StartScreen.cs" />

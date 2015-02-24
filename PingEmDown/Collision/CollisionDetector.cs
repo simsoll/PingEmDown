@@ -12,6 +12,7 @@ using PingEmDown.Extensions;
 using PingEmDown.Level;
 using PingEmDown.Level.Messages;
 using PingEmDown.Messaging.Caliburn.Micro;
+using PingEmDown.Rectangle;
 using Tao.Sdl;
 using Matrix = Microsoft.Xna.Framework.Matrix;
 
@@ -36,8 +37,8 @@ namespace PingEmDown.Collision
             {
                 var wall = walls.First(w => paddle.Boundings.Intersects(w.Boundings));
 
-                var paddleBoundingsLastFrame = new Rectangle((int) (paddle.Boundings.X - paddle.Velocity.X),
-                    (int) (paddle.Boundings.Y - paddle.Velocity.Y), paddle.Boundings.Width, paddle.Boundings.Height);
+                var paddleBoundingsLastFrame = new Rectangle.Rectangle(paddle.Boundings.X - paddle.Velocity.X,
+                    paddle.Boundings.Y - paddle.Velocity.Y, paddle.Boundings.Width, paddle.Boundings.Height);
 
                 var collisionPenetration = CollisionPenetration(wall.Boundings, paddle.Boundings,
                     paddleBoundingsLastFrame);
@@ -56,8 +57,8 @@ namespace PingEmDown.Collision
             {
                 var wall = walls.First(w => ball.Boundings.Intersects(w.Boundings));
 
-                var ballBoundingsLastFrame = new Rectangle((int) (ball.Boundings.X - ball.Velocity.X),
-                    (int) (ball.Boundings.Y - ball.Velocity.Y), ball.Boundings.Width, ball.Boundings.Height);
+                var ballBoundingsLastFrame = new Rectangle.Rectangle(ball.Boundings.X - ball.Velocity.X,
+                    ball.Boundings.Y - ball.Velocity.Y, ball.Boundings.Width, ball.Boundings.Height);
 
                 var collisionPenetration = CollisionPenetration(wall.Boundings, ball.Boundings,
                     ballBoundingsLastFrame);
@@ -78,9 +79,9 @@ namespace PingEmDown.Collision
         }
 
         private CollisionPenetration CollisionPenetration(
-            Rectangle struckObject, 
-            Rectangle movingObject,
-            Rectangle movingObjectLastFrame)
+            IRectangle struckObject, 
+            IRectangle movingObject,
+            IRectangle movingObjectLastFrame)
         {
             var penetrations = new List<CollisionPenetration>();
 

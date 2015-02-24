@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using PingEmDown.Rectangle;
 
 namespace PingEmDown.Components.Paddle
 {
@@ -6,7 +7,7 @@ namespace PingEmDown.Components.Paddle
     {
         Vector2 Position { get; set; }
         Vector2 Velocity { get; set; }
-        Rectangle Boundings { get; }
+        IRectangle Boundings { get; }
         Color Color { get; }
         float Rotation { get; }
 

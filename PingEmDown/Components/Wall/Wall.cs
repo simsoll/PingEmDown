@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using PingEmDown.Rectangle;
 
 namespace PingEmDown.Components.Wall
 {
@@ -8,9 +9,9 @@ namespace PingEmDown.Components.Wall
         public int Width { get; set; }
         public Vector2 Position { get; set; }
 
-        public Rectangle Boundings
+        public IRectangle Boundings
         {
-            get { return new Rectangle((int) Position.X, (int) Position.Y, Width, Height); }
+            get { return new Rectangle.Rectangle(Position.X, Position.Y, Width, Height); }
         }
 
         public Wall(int height, int width, Vector2 position, Color color, float rotation)
