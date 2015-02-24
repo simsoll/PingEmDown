@@ -6,7 +6,9 @@ using System.Text;
 using MathNet.Numerics.LinearAlgebra.Double;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using PingEmDown.Components.Ball;
 using PingEmDown.Components.Ball.Messages;
+using PingEmDown.Components.Block;
 using PingEmDown.Components.Wall;
 using PingEmDown.Extensions;
 using PingEmDown.Level;
@@ -53,14 +55,21 @@ namespace PingEmDown.Collision
             var ball = _level.Ball;
             var walls = _level.Walls;
 
-            if (walls.Any(wall => ball.Boundings.Intersects(wall.Boundings)))
+            HandleBallCollisionWithRectangles(ball,
+                walls.Select(w => w.Boundings)
+                    .Union(_level.Blocks.Select(b => b.Boundings).Union(new[] {_level.Paddle.Boundings})));
+        }
+
+        private void HandleBallCollisionWithRectangles(IBall ball, IEnumerable<IRectangle> rectangles)
+        {
+            if (rectangles.Any(rectangle => ball.Boundings.Intersects(rectangle)))
             {
-                var wall = walls.First(w => ball.Boundings.Intersects(w.Boundings));
+                var rectangle = rectangles.First(r => ball.Boundings.Intersects(r));
 
                 var ballBoundingsLastFrame = new Rectangle.Rectangle(ball.Boundings.X - ball.Velocity.X,
                     ball.Boundings.Y - ball.Velocity.Y, ball.Boundings.Width, ball.Boundings.Height);
 
-                var collisionPenetration = CollisionPenetration(wall.Boundings, ball.Boundings,
+                var collisionPenetration = CollisionPenetration(rectangle, ball.Boundings,
                     ballBoundingsLastFrame);
 
                 ball.Position -= collisionPenetration.Depth;
