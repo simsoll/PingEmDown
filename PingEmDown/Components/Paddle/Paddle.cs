@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Xml.Schema;
 using Microsoft.Xna.Framework;
+using PingEmDown.Collision;
 using PingEmDown.Components.Paddle.Messages;
 using PingEmDown.Input.Messages;
 using PingEmDown.Level.Messages;
@@ -9,7 +11,7 @@ using PingEmDown.Rectangle;
 
 namespace PingEmDown.Components.Paddle
 {
-    public class Paddle : IPaddle, IHandle<Move>, IHandle<ReleaseBall>
+    public class Paddle : IPaddle, IHandle<Move>, IHandle<ReleaseBall>, IHandle<BallCollidedWithPaddle>
     {
         private readonly IEventAggregator _eventAggregator;
         private Vector2 previousPosition;
@@ -83,6 +85,25 @@ namespace PingEmDown.Components.Paddle
             {
                 Paddle = this
             });
+        }
+
+        public void Handle(BallCollidedWithPaddle message)
+        {
+            if (message.Paddle != this)
+            {
+                return;
+            }
+
+            var speed = message.Ball.Velocity.Length();
+            var paddleHittingPointX = message.Ball.Position.X + message.Ball.Width/2.0f;
+
+            var leftInterpolation = -3.0f;
+            var rightInterpolation = 3.0f;
+            var newDirectionX = leftInterpolation +
+                                (rightInterpolation - leftInterpolation)/Width*
+                                (paddleHittingPointX - Position.X);
+
+            message.Ball.Velocity = Vector2.Normalize(new Vector2(newDirectionX, message.Ball.Velocity.Y))*speed;
         }
     }
 }
