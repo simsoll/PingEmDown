@@ -11,7 +11,7 @@ namespace PingEmDown.Level
     {
         string Name { get; }
         IEnumerable<IWall> Walls { get; }
-        IEnumerable<IBlock> Blocks { get; }
+        IList<IBlock> Blocks { get; }
         IPaddle Paddle { get; }
         IBall Ball { get; }
         void Load();

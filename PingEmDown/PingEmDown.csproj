@@ -35,6 +35,9 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Collision\Messages\BallCollidedWithWall.cs" />
+    <Compile Include="Collision\Messages\BallCollidedWithPaddle.cs" />
+    <Compile Include="Collision\Messages\BallCollidedWithBlock.cs" />
     <Compile Include="Collision\CollisionDetector.cs" />
     <Compile Include="Collision\ICollisionDetector.cs" />
     <Compile Include="Components\Ball\Messages\BallMoved.cs" />

@@ -86,6 +86,11 @@ namespace PingEmDown.Components.Ball
             get { return _currentState.Boundings; }
         }
 
+        public IRectangle BoundingsLastFrame
+        {
+            get { return _currentState.BoundingsLastFrame; }
+        }
+
         public Color Color
         {
             get { return _currentState.Color; }

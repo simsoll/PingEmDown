@@ -6,9 +6,11 @@ using System.Text;
 using MathNet.Numerics.LinearAlgebra.Double;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using PingEmDown.Collision.Messages;
 using PingEmDown.Components.Ball;
 using PingEmDown.Components.Ball.Messages;
 using PingEmDown.Components.Block;
+using PingEmDown.Components.Paddle;
 using PingEmDown.Components.Wall;
 using PingEmDown.Extensions;
 using PingEmDown.Level;
@@ -52,39 +54,103 @@ namespace PingEmDown.Collision
 
         public void Handle(BallMoved message)
         {
-            var ball = _level.Ball;
-            var walls = _level.Walls;
-
-            HandleBallCollisionWithRectangles(ball,
-                walls.Select(w => w.Boundings)
-                    .Union(_level.Blocks.Select(b => b.Boundings).Union(new[] {_level.Paddle.Boundings})));
+            CheckForBallCollisionWithBlocks(_level.Ball, _level.Blocks);
+            CheckForBallCollisionWithWalls(_level.Ball, _level.Walls);
+            CheckForBallCollisionWithPaddle(_level.Ball, _level.Paddle);
         }
 
-        private void HandleBallCollisionWithRectangles(IBall ball, IEnumerable<IRectangle> rectangles)
+        private void CheckForBallCollisionWithPaddle(IBall ball, IPaddle paddle)
         {
-            if (rectangles.Any(rectangle => ball.Boundings.Intersects(rectangle)))
+            if (!ball.Boundings.Intersects(paddle.Boundings))
             {
-                var rectangle = rectangles.First(r => ball.Boundings.Intersects(r));
-
-                var ballBoundingsLastFrame = new Rectangle.Rectangle(ball.Boundings.X - ball.Velocity.X,
-                    ball.Boundings.Y - ball.Velocity.Y, ball.Boundings.Width, ball.Boundings.Height);
-
-                var collisionPenetration = CollisionPenetration(rectangle, ball.Boundings,
-                    ballBoundingsLastFrame);
-
-                ball.Position -= collisionPenetration.Depth;
-                switch (collisionPenetration.From)
-                {
-                    case Direction.Left:
-                    case Direction.Right:
-                        ball.Velocity *= new Vector2(-1, 1);
-                        break;
-                    case Direction.Top:
-                    case Direction.Bottom:
-                        ball.Velocity *= new Vector2(1, -1);
-                        break;
-                }
+                return;
             }
+
+            var collisionPenetration = CollisionPenetration(paddle.Boundings, ball.Boundings,
+                ball.BoundingsLastFrame);
+
+            ball.Position -= collisionPenetration.Depth;
+            switch (collisionPenetration.From)
+            {
+                case Direction.Left:
+                case Direction.Right:
+                    ball.Velocity *= new Vector2(-1, 1);
+                    break;
+                case Direction.Top:
+                case Direction.Bottom:
+                    ball.Velocity *= new Vector2(1, -1);
+                    break;
+            }
+
+            _eventAggregator.Publish(new BallCollidedWithPaddle()
+            {
+                Ball = ball,
+                Paddle = paddle
+            });
+        }
+
+        private void CheckForBallCollisionWithWalls(IBall ball, IEnumerable<IWall> walls)
+        {
+            var wall = walls.FirstOrDefault(w => ball.Boundings.Intersects(w.Boundings));
+
+            if (wall == null)
+            {
+                return;
+            }
+
+            var collisionPenetration = CollisionPenetration(wall.Boundings, ball.Boundings,
+                ball.BoundingsLastFrame);
+
+            ball.Position -= collisionPenetration.Depth;
+            switch (collisionPenetration.From)
+            {
+                case Direction.Left:
+                case Direction.Right:
+                    ball.Velocity *= new Vector2(-1, 1);
+                    break;
+                case Direction.Top:
+                case Direction.Bottom:
+                    ball.Velocity *= new Vector2(1, -1);
+                    break;
+            }
+
+            _eventAggregator.Publish(new BallCollidedWithWall
+            {
+                Ball = ball,
+                Wall = wall
+            });
+        }
+
+        private void CheckForBallCollisionWithBlocks(IBall ball, IEnumerable<IBlock> blocks)
+        {
+            var block = blocks.FirstOrDefault(b => ball.Boundings.Intersects(b.Boundings));
+
+            if (block == null)
+            {
+                return;
+            }
+
+            var collisionPenetration = CollisionPenetration(block.Boundings, ball.Boundings,
+                ball.BoundingsLastFrame);
+
+            ball.Position -= collisionPenetration.Depth;
+            switch (collisionPenetration.From)
+            {
+                case Direction.Left:
+                case Direction.Right:
+                    ball.Velocity *= new Vector2(-1, 1);
+                    break;
+                case Direction.Top:
+                case Direction.Bottom:
+                    ball.Velocity *= new Vector2(1, -1);
+                    break;
+            }
+
+            _eventAggregator.Publish(new BallCollidedWithBlock()
+            {
+                Ball = ball,
+                Block = block
+            });
         }
 
         private CollisionPenetration CollisionPenetration(

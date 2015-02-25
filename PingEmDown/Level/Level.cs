@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using PingEmDown.Collision;
 using PingEmDown.Components.Ball;
 using PingEmDown.Components.Block;
 using PingEmDown.Components.Paddle;
@@ -13,12 +14,12 @@ using PingEmDown.Messaging.Caliburn.Micro;
 
 namespace PingEmDown.Level
 {
-    public class Level : ILevel
+    public class Level : ILevel, IHandle<BallCollidedWithBlock>
     {
         private readonly IEventAggregator _eventAggregator;
         public string Name { get { return "Level 1"; } }
         public IEnumerable<IWall> Walls { get; private set; }
-        public IEnumerable<IBlock> Blocks { get; private set; }
+        public IList<IBlock> Blocks { get; private set; }
         public IPaddle Paddle { get; private set; }
         public IBall Ball { get; private set; }
 
@@ -27,7 +28,7 @@ namespace PingEmDown.Level
         {
             _eventAggregator = eventAggregator;
             Walls = walls;
-            Blocks = blocks;
+            Blocks = blocks.ToList();
             Paddle = paddle;
             Ball = ball;
         }
@@ -60,6 +61,11 @@ namespace PingEmDown.Level
         {
             Paddle.Update(gameTime);
             Ball.Update(gameTime);
+        }
+
+        public void Handle(BallCollidedWithBlock message)
+        {
+            Blocks.Remove(message.Block);
         }
     }
 }

@@ -61,6 +61,17 @@ namespace PingEmDown.Components.Ball
             }
         }
 
+        public IRectangle BoundingsLastFrame
+        {
+            get
+            {
+                var boundings = Boundings;
+
+                return new Rectangle.Rectangle(boundings.X - Velocity.X,
+                    boundings.Y - Velocity.Y, boundings.Width, boundings.Height);
+            }
+        }
+
         public Color Color { get; private set; }
 
         public float Rotation { get; private set; }

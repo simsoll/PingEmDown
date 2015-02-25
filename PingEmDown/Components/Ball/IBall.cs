@@ -11,6 +11,7 @@ namespace PingEmDown.Components.Ball
         Vector2 Position { get; set; }
         Vector2 Velocity { get; set; }
         IRectangle Boundings { get; }
+        IRectangle BoundingsLastFrame { get; }
         Color Color { get; }
         float Rotation { get; }
 
