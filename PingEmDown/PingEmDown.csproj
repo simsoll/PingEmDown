@@ -77,6 +77,7 @@
     <Compile Include="Components\Paddle\Paddle.cs" />
     <Compile Include="Level\Level.cs" />
     <Compile Include="Level\LevelManager.cs" />
+    <Compile Include="Particle\IParticle.cs" />
     <Compile Include="Particle\IParticleManager.cs" />
     <Compile Include="Particle\Particle.cs" />
     <Compile Include="Particle\ParticleManager.cs" />

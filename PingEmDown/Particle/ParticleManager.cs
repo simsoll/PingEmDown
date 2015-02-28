@@ -42,6 +42,7 @@ namespace PingEmDown.Particle
             for (var particle = 0; particle < _particles.Count; particle++)
             {
                 _particles[particle].Update(gameTime);
+
                 if (_particles[particle].IsDead())
                 {
                     _particles.RemoveAt(particle);
@@ -102,8 +103,8 @@ namespace PingEmDown.Particle
 
         public void Handle(BallCollidedWithBlock message)
         {
-            var particleRows = 1;
-            var particleColumns = 4;
+            var particleRows = 2;
+            var particleColumns = 10;
 
             var particleWidth = message.Block.Boundings.Width/particleColumns;
             var particleHeight = message.Block.Boundings.Height/particleRows;

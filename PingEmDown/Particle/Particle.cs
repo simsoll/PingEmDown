@@ -5,7 +5,7 @@ using PingEmDown.Rectangle;
 
 namespace PingEmDown.Particle
 {
-    public class Particle
+    public class Particle : IParticle
     {
         public IRectangle Boundings
         {
