@@ -14,6 +14,8 @@ using PingEmDown.Input;
 using PingEmDown.Input.Keyboard;
 using PingEmDown.Level;
 using PingEmDown.Messaging.Caliburn.Micro;
+using PingEmDown.Particle;
+using PingEmDown.Randomizer;
 using PingEmDown.Screen;
 using PingEmDown.Text;
 
@@ -30,6 +32,7 @@ namespace PingEmDown
         private SpriteBatch _spriteBatch;
 
         private IEventAggregator _eventAggregator;
+        private IRandomizer _randomizer;
         private KeyboardManager _keyboardManager;
         private PlayerInput _playerInput;
         private ScreenManager _screenManager;
@@ -75,16 +78,19 @@ namespace PingEmDown
             var texture = GetPlain2DTexture(1);
 
             _eventAggregator = new EventAggregator();
+            _randomizer = new Randomizer.Randomizer();
             _keyboardManager = new KeyboardManager(_eventAggregator, TimeSpan.Zero);
             _playerInput = new PlayerInput(_eventAggregator);
-            var collisionDetector = new CollisionDetector(_eventAggregator);
+            var collisionManager = new CollisionManager(_eventAggregator);
             var drawer = new Drawer(_spriteBatch, texture);
             var textDrawer = new Drawer(_spriteBatch, textTexture);
             var pixelTextDrawer = new PixelTextDrawer(textDrawer);
+            var particleManager = new ParticleManager(_eventAggregator, drawer, _randomizer);
+
 
             var startScreen = new StartScreen(_eventAggregator, pixelTextDrawer, screenConfiguration, textConfiguration);
             var levelFactory = new LevelFactory(_eventAggregator, screenConfiguration, levelConfiguration);
-            var levelManager = new LevelManager(_eventAggregator, levelFactory, collisionDetector, drawer);
+            var levelManager = new LevelManager(_eventAggregator, levelFactory, collisionManager, particleManager, drawer);
             var gameScreen = new GameScreen(_eventAggregator, levelManager);
             _screenManager = new ScreenManager(_eventAggregator, startScreen, gameScreen);
 

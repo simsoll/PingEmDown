@@ -1,6 +1,6 @@
 ﻿namespace PingEmDown.Collision
 {
-    public interface ICollisionDetector
+    public interface ICollisionManager
     {
         void Load();
         void Unload();

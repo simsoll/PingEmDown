@@ -13,6 +13,7 @@ namespace PingEmDown.Components.Ball
         private readonly IEventAggregator _eventAggregator;
         private IBall _stickyState;
         private IBall _flyingState;
+        private float _ballSpeed = 150;
 
         private IBall _currentState;
 
@@ -111,7 +112,7 @@ namespace PingEmDown.Components.Ball
             var y = paddle.Boundings.Y - Height;
 
             _currentState.Position = new Vector2(x, y);
-            _currentState.Velocity = Vector2.Normalize(paddle.Velocity + new Vector2(0, -1)) * 3;
+            _currentState.Velocity = Vector2.Normalize(paddle.Velocity + new Vector2(0, -1) * _ballSpeed) * _ballSpeed;
         }
     }
 }

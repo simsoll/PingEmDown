@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Xml.Schema;
 using Microsoft.Xna.Framework;
 using PingEmDown.Collision;
+using PingEmDown.Collision.Messages;
 using PingEmDown.Components.Paddle.Messages;
 using PingEmDown.Input.Messages;
 using PingEmDown.Level.Messages;
@@ -16,9 +17,9 @@ namespace PingEmDown.Components.Paddle
         private readonly IEventAggregator _eventAggregator;
         private Vector2 previousPosition;
 
-        private readonly float _speed = 5;
+        private readonly float _speed = 250;
         private readonly float _movementTolerance = 0.05f;
-        private readonly float _velocityDamping = 0.95f;
+        private readonly float _velocityDamping = 0.90f;
 
         public Paddle(IEventAggregator eventAggregator, int height, int width, Vector2 position, Color color)
         {
@@ -43,8 +44,10 @@ namespace PingEmDown.Components.Paddle
 
         public void Update(GameTime gameTime)
         {
+            var elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
             Velocity *= _velocityDamping;
-            Position += Velocity;
+            Position += Velocity * elapsed;
 
             if (Math.Abs(Velocity.X) > _movementTolerance)
             {
@@ -97,8 +100,10 @@ namespace PingEmDown.Components.Paddle
             var speed = message.Ball.Velocity.Length();
             var paddleHittingPointX = message.Ball.Position.X + message.Ball.Width/2.0f;
 
-            var leftInterpolation = -3.0f;
-            var rightInterpolation = 3.0f;
+            var ballSpeed = message.Ball.Velocity.Length();
+
+            var leftInterpolation = -ballSpeed;
+            var rightInterpolation = ballSpeed;
             var newDirectionX = leftInterpolation +
                                 (rightInterpolation - leftInterpolation)/Width*
                                 (paddleHittingPointX - Position.X);

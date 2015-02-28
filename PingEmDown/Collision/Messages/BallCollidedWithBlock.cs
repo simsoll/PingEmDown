@@ -1,7 +1,7 @@
 using PingEmDown.Components.Ball;
 using PingEmDown.Components.Block;
 
-namespace PingEmDown.Collision
+namespace PingEmDown.Collision.Messages
 {
     public class BallCollidedWithBlock
     {

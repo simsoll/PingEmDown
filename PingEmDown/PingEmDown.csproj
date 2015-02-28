@@ -38,8 +38,8 @@
     <Compile Include="Collision\Messages\BallCollidedWithWall.cs" />
     <Compile Include="Collision\Messages\BallCollidedWithPaddle.cs" />
     <Compile Include="Collision\Messages\BallCollidedWithBlock.cs" />
-    <Compile Include="Collision\CollisionDetector.cs" />
-    <Compile Include="Collision\ICollisionDetector.cs" />
+    <Compile Include="Collision\CollisionManager.cs" />
+    <Compile Include="Collision\ICollisionManager.cs" />
     <Compile Include="Components\Ball\Messages\BallMoved.cs" />
     <Compile Include="Components\Ball\StickyBall.cs" />
     <Compile Include="Components\Ball\Ball.cs" />
@@ -77,9 +77,13 @@
     <Compile Include="Components\Paddle\Paddle.cs" />
     <Compile Include="Level\Level.cs" />
     <Compile Include="Level\LevelManager.cs" />
+    <Compile Include="Particle\IParticleManager.cs" />
+    <Compile Include="Particle\Particle.cs" />
+    <Compile Include="Particle\ParticleManager.cs" />
     <Compile Include="Randomizer\IRandomizer.cs" />
     <Compile Include="Randomizer\Randomizer.cs" />
     <Compile Include="Rectangle\IRectangle.cs" />
+    <Compile Include="Rectangle\Rectangle.cs" />
     <Compile Include="Screen\GameScreen.cs" />
     <Compile Include="Screen\Messages\StartGame.cs" />
     <Compile Include="Screen\StartScreen.cs" />

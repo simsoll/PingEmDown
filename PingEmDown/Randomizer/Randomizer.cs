@@ -36,9 +36,9 @@ namespace PingEmDown.Randomizer
             return _random.Next(minValue, maxValue);
         }
 
-        public double NextDouble()
+        public float NextDouble()
         {
-            return _random.NextDouble();
+            return (float) _random.NextDouble();
         }
     }
 }

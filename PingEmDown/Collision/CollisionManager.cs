@@ -22,12 +22,12 @@ using Matrix = Microsoft.Xna.Framework.Matrix;
 
 namespace PingEmDown.Collision
 {
-    public class CollisionDetector : ICollisionDetector, IHandle<PaddleMoved>, IHandle<BallMoved>, IHandle<LevelLoaded>, IHandle<LevelUnloaded>
+    public class CollisionManager : ICollisionManager, IHandle<PaddleMoved>, IHandle<BallMoved>, IHandle<LevelLoaded>, IHandle<LevelUnloaded>
     {
         private readonly IEventAggregator _eventAggregator;
         private ILevel _level;
 
-        public CollisionDetector(IEventAggregator eventAggregator)
+        public CollisionManager(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
         }
