@@ -46,7 +46,8 @@ namespace PingEmDown.Level
                     new Vector2(_screenConfiguration.ScreenWidth/2.0f - _levelConfiguration.BallSize/2.0f,
                         paddle.Position.Y - _levelConfiguration.BallSize),
                     _levelConfiguration.BallColor,
-                    0.0f));
+                    0.0f,
+                    20.0f));
 
             return new Level(
                 _eventAggregator,

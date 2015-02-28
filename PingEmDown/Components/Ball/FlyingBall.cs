@@ -9,10 +9,12 @@ namespace PingEmDown.Components.Ball
     public class FlyingBall : IBall
     {
         private readonly IEventAggregator _eventAggregator;
+        private readonly float _rotationVelocity;
 
-        public FlyingBall(IEventAggregator eventAggregator, int height, int width, Vector2 position, Color color, float rotation)
+        public FlyingBall(IEventAggregator eventAggregator, int height, int width, Vector2 position, Color color, float rotation, float rotationVelocity)
         {
             _eventAggregator = eventAggregator;
+            _rotationVelocity = rotationVelocity;
             Rotation = rotation;
             Color = color;
             Position = position;
@@ -26,6 +28,7 @@ namespace PingEmDown.Components.Ball
         {
             var elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
+            Rotation += _rotationVelocity*elapsed;
             Position += Velocity * elapsed;
 
             _eventAggregator.Publish(new BallMoved
