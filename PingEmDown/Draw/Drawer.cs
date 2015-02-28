@@ -25,9 +25,11 @@ namespace PingEmDown.Draw
 
         public void Draw(IRectangle destinationRectangle, Color color, float rotation)
         {
-            _spriteBatch.Draw(_texture, destinationRectangle.Position,
+            var origin = new Vector2(_texture.Width / 2.0f, _texture.Height / 2.0f);
+
+            _spriteBatch.Draw(_texture, destinationRectangle.Position + destinationRectangle.Scale * origin,
                 new Microsoft.Xna.Framework.Rectangle((int) _sourceRetangle.X, (int) _sourceRetangle.Y,
-                    (int)_sourceRetangle.Width, (int)_sourceRetangle.Height), color, rotation, Vector2.Zero, destinationRectangle.Scale,
+                    (int)_sourceRetangle.Width, (int)_sourceRetangle.Height), color, rotation, origin, destinationRectangle.Scale,
                 SpriteEffects.None, 0.0f);
         }
     }
